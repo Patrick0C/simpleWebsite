@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+		<!-- Bootstrap CSS -->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+
+		<title>Chance & Counters</title>
+	
+		<style>
+			
+			/*Custom sizing for images in the carousel */
+			.carousel-inner > .carousel-item > img {
+			width:80%; height:450px; 
+			} 
+		</style>
+		
+	</head>
+    
+	<body>
+	
+		<?php
+	
+		//Step 1:  Create a database connection
+		$dbhost = "localhost";
+		$dbuser = "root";
+		$dbpassword = "";
+		$dbname = "g00398246";
+
+		$connection = mysqli_connect($dbhost,$dbuser,$dbpassword,$dbname);
+		
+		//Test if connection occoured
+		if(mysqli_connect_errno()){
+			die("DB connection failed: " .
+				mysqli_connect_error() .
+					" (" . mysqli_connect_errno() . ")"
+					);
+		}
+
+		if (!$connection)
+			{
+				die('Could not connect: ' . mysqli_error());
+			}
+		
+		
+		
+		
+		//Step 2: Perform Database Query
+
+		$products = mysqli_query($connection,"SELECT * FROM products");
+		
+		
+		
+		
+		//Step 3: User returned data
+		echo "<table border='1' id='myTable'>
+		<tr>
+		<th>Item1</th>
+		<th>Item 2</th>
+		<th>Item3</th>
+		</tr>";
+		
+		while($row = mysqli_fetch_array($products))
+		{
+			echo "<tr>";
+			echo "<td>" . $row['name'] . "</td>";
+			echo "<td>" . $row['desc'] . "</td>";
+			echo "<td>" . $row['price'] ."</td>";
+			
+			echo "</tr>";
+		}
+		
+		echo "</table>";
+		
+		
+		
+		//4.  Release returned data 
+		mysqli_free_result($products);
+
+		
+		
+		//5.  Close database connection
+		mysqli_close($connection);
+		
+		
+	?>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		<!-- Alert displays at the top on the window reminding users to login before adding items to the cart. -->
+		<!-- This alert can be closed by clicking the "x" button on the right side of the screen -->
+		<div class="alert alert-info alert-dismissible fade show" role="alert" id="loginStatus">
+			<strong>Please login before adding items to the cart.</strong>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+
+
+
+		<!-- Login modal requiring the user to enter an email and password -->
+		<!-- The modal will only close when one of the three buttons are pressed -->
+		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="staticBackdropLabel">Please enter login details...</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="user">Email:</label>
+							<input type="text" class="form-control" id="user">
+						</div>
+						<div class="form-group">
+							<label for="pass">Password:</label>
+							<input type="password" class="form-control" id="pass">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button onclick="loginModal()" data-bs-dismiss= "modal" type="button" class="btn btn-primary">Login</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		<!-- Simple navigation bar -->
+		<!-- Navbar includes an image of the store logo with text and a login button -->
+		<!-- sticky-top class has been added to keep this bar on the top of the screen regardless of scrolling -->
+		<!-- Navbar background and theme set to dark to add contrast to the white image -->
+		<nav class="navbar sticky-top navbar-dark bg-dark">
+			<div class="container-fluid">
+				<!-- The image and text in the nav bar use an anchor tag which returns the user to the top of the current page -->
+				<a class="navbar-brand" href="#top">
+				<img src="images/storeLogo.jpg" alt="" width="60" height="60" class="d-inline-block align-text-top">
+				Chance & Counters
+				</a>
+			
+				<!-- Button trigger modal for login -->		
+				<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="loginBtn">
+				Login
+				</button>
+			</div>
+		</nav>
+		
+		<!-- Webpage carousel displaying upcoming games -->
+		<div id="carouselCaptions" class="carousel slide" data-bs-ride="carousel">
+			<p>Upcoming games</p>	
+			<div class="carousel-indicators">
+			<button type="button" data-bs-target="#carouselCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+			<button type="button" data-bs-target="#carouselCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+			<button type="button" data-bs-target="#carouselCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+			</div>
+		  
+		<div class="carousel-inner" id = "car">
+			<div class="carousel-item active" >
+			  <img src="images/setAWatch.png" class="d-block mx-auto" alt="Set a Watch">
+			  <div class="carousel-caption d-none d-md-block">
+				<h5>Set a Watch</h5>
+				<p>The Kingdom is in grave danger. Powerful enemies are conspiring to resurrect the vile and powerful Unhallowed that your party has just slain.</p>
+				<p>Set a Watch is a co-operative gane for 1-4 players.</p>
+				<p> In-store from 30/07/2021 </p>
+			  </div>
+			</div>
+				
+			<div class="carousel-item">
+			  <img src="images/theCrew.jpg" class="d-block mx-auto" alt="The Crew">
+			  <div class="carousel-caption d-none d-md-block">
+				<h5>The Crew: The Quest For Planet Nine</h5>
+				<p>Winner of the 2020 Kennerspiel des Jahres,</p>
+				<p>The Crew sets the players out as astronauts on an uncertain space adventure as a co-operative experience for 2-5 players.</p>
+				<p>In-store from 05/08/2021 </p>
+			  </div>
+			</div>
+				
+			<div class="carousel-item">
+			  <img src="images/ticketTR.jpg" class="d-block mx-auto" alt="Ticket To Ride: Europe">
+			  <div class="carousel-caption d-none d-md-block">
+				<h5>Ticket To Ride: Europe</h5>
+				<p>Build train routes across Europe in this sequel to the hit family board game.</p>
+				<p>In-store from 10/08/2021</p>
+			  </div>
+			</div>
+		  </div>
+			  
+		  <button class="carousel-control-prev" type="button" data-bs-target="#carouselCaptions" data-bs-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			<span class="visually-hidden">Previous</span>
+		  </button>
+			  
+		  <button class="carousel-control-next" type="button" data-bs-target="#carouselCaptions" data-bs-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span>
+			<span class="visually-hidden">Next</span>
+		  </button>
+		</div>
+		
+		<script>
+		
+		
+		function loginModal(){
+		
+			user = document.getElementById("user").value;
+			pass = document.getElementById("pass").value;
+			
+			if (user == "drop" && pass == "table"){
+				alert("Welcome back!");
+				document.getElementById("loginBtn").style.visibility = "hidden";
+				document.getElementById("loginStatus").style.visibility ="hidden";
+		
+				
+			} else {
+			
+				document.getElementById("loginStatus").innerHTML = "Please enter a valid username and password."
+			}
+		}
+		
+		var carouselArray = ["setAWatch.png", "theCrew.jpg", "ticketTR.jpg"];
+		
+		
+		
+		</script>
+	   
+
+		<!-- Code taken from https://getbootstrap.com/docs/4.0/getting-started/introduction/ as part of the "Starter template" -->
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous">
+		
+
+		 
+		
+		</script>
+  </body>
+</html>
